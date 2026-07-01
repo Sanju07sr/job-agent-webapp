@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Job Agent - Setup Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #0a66c2 0%, #004182 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 42px; margin-bottom: 10px; }
+        .header p { font-size: 18px; opacity: 0.9; }
+        .content { padding: 50px 40px; }
+        .section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .section:last-child { border-bottom: none; }
+        .section h2 {
+            font-size: 28px;
+            color: #0a66c2;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: #0a66c2;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .section p { font-size: 16px; line-height: 1.8; color: #333; margin-bottom: 15px; }
+        .code-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .feature {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #0a66c2;
+        }
+        .feature h3 { color: #0a66c2; margin-bottom: 10px; font-size: 18px; }
+        .cta-button {
+            display: inline-block;
+            background: #0a66c2;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 20px 10px 0 0;
+            transition: all 0.3s;
+        }
+        .cta-button:hover { background: #004182; transform: translateY(-2px); }
+        .cta-secondary {
+            background: #28a745;
+        }
+        .cta-secondary:hover { background: #1e7e34; }
+        ul { margin: 15px 0; padding-left: 25px; }
+        ul li { margin: 8px 0; line-height: 1.6; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
+        .emoji { font-size: 24px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 LinkedIn Job Agent</h1>
+            <p>Your Personal 24/7 Job Hunting Assistant - Free Forever</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2><span class="emoji">✨</span> What This Does</h2>
+                <p>Get instant email alerts when LinkedIn posts jobs matching your profile — completely automated, runs 24/7 in the background, 100% free.</p>
+                <div class="feature">
+                    <h3>🔍 Smart Matching</h3>
+                    <p>Uses OpenAI GPT-4o-mini to score jobs against your CV and skills</p>
+                </div>
+                <div class="feature">
+                    <h3>📧 Instant Alerts</h3>
+                    <p>Receive beautiful HTML emails every hour with new relevant jobs</p>
+                </div>
+                <div class="feature">
+                    <h3>🚫 No Duplicates</h3>
+                    <p>Smart caching ensures you only see each job once</p>
+                </div>
+                <div class="feature">
+                    <h3>💰 Zero Cost</h3>
+                    <p>Runs entirely on free GitHub Actions (2,000 minutes/month free)</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="step-number">1</span> Fork This Repository</h2>
+                <p>Click the button below to create your own copy of this job agent:</p>
+                <a href="https://github.com/Sanju07sr/linkedin-job-agent/fork" class="cta-button" target="_blank">Fork Repository</a>
+            </div>
+
+            <div class="section">
+                <h2><span class="step-number">2</span> Customize Your Profile</h2>
+                <p>Edit <span class="highlight">job_scanner.py</span> and update these sections:</p>
+                <div class="code-box">CANDIDATE_PROFILE = """<br>
+Name: [Your Name]<br>
+Experience: [e.g., 4 years in Python Development]<br>
+Skills: [e.g., Django, Flask, AWS, PostgreSQL]<br>
+Visa: [e.g., Stamp 4 (Ireland) - eligible to work full-time]<br>
+Location: [e.g., Dublin/Ireland (open to hybrid/remote)]<br>
+Certifications: [e.g., AWS Certified Developer]<br>
+Domain: [e.g., FinTech, E-commerce]<br>
+"""</div>
+                <div class="code-box">TITLE_MUST_CONTAIN = [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'python', 'django', 'backend', 'software engineer',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'full stack', 'api developer', 'flask'<br>
+]</div>
+                <div class="code-box">search_queries = [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'Python Developer Ireland',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'Backend Engineer Ireland',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'Django Developer Ireland',<br>
+]</div>
+            </div>
+
+            <div class="section">
+                <h2><span class="step-number">3</span> Set Up Secrets</h2>
+                <p>Go to <span class="highlight">Settings → Secrets and variables → Actions</span> in your forked repo and add:</p>
+                <ul>
+                    <li><strong>SENDER_EMAIL:</strong> Your Gmail address (e.g., yourname@gmail.com)</li>
+                    <li><strong>SENDER_PASSWORD:</strong> Gmail App Password (<a href="https://myaccount.google.com/apppasswords" target="_blank">Generate here</a>)</li>
+                    <li><strong>RECIPIENT_EMAIL:</strong> Email where you want job alerts sent</li>
+                    <li><strong>OPENAI_API_KEY:</strong> Your OpenAI API key (<a href="https://platform.openai.com/api-keys" target="_blank">Get key</a>)</li>
+                    <li><strong>MIN_MATCH_PCT:</strong> Minimum match % to trigger alert (default: 50)</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="step-number">4</span> Enable GitHub Actions</h2>
+                <p>Go to the <span class="highlight">Actions</span> tab in your forked repo and click <strong>"I understand my workflows, go ahead and enable them"</strong></p>
+            </div>
+
+            <div class="section">
+                <h2><span class="step-number">5</span> Test Your Agent</h2>
+                <p>Go to <span class="highlight">Actions → LinkedIn Job Scanner - 24/7 Agent → Run workflow</span> to trigger a manual test run.</p>
+                <p>Check your email inbox (and spam folder) for job alerts!</p>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">⚙️</span> Customization Options</h2>
+                <p>Edit <span class="highlight">.github/workflows/scan.yml</span> to change the schedule:</p>
+                <div class="code-box">schedule:<br>
+&nbsp;&nbsp;- cron: '*/30 * * * *'  # Every 30 minutes (default)<br>
+&nbsp;&nbsp;# OR<br>
+&nbsp;&nbsp;- cron: '0 * * * *'     # Every hour<br>
+&nbsp;&nbsp;# OR<br>
+&nbsp;&nbsp;- cron: '0 */2 * * *'   # Every 2 hours</div>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">📊</span> Monitor Your Agent</h2>
+                <p>Check the <span class="highlight">Actions</span> tab anytime to see:</p>
+                <ul>
+                    <li>✅ Which jobs were found and scored</li>
+                    <li>📩 How many email alerts were sent</li>
+                    <li>🚫 Which jobs were filtered out (irrelevant titles)</li>
+                    <li>⏱️ Run history and success rate</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">🎯</span> Tips for Best Results</h2>
+                <ul>
+                    <li><strong>Be specific with job titles:</strong> Add exact titles you're targeting to reduce false positives</li>
+                    <li><strong>Update your profile regularly:</strong> Keep CANDIDATE_PROFILE in sync with your latest skills</li>
+                    <li><strong>Adjust match threshold:</strong> Start with 50%, increase to 70% if you get too many alerts</li>
+                    <li><strong>Check spam folder:</strong> First few emails might land in spam — mark as "Not Spam"</li>
+                    <li><strong>Monitor LinkedIn blocks:</strong> If you see 429 errors, the script auto-retries with delays</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">🆘</span> Need Help?</h2>
+                <p>Common issues and solutions:</p>
+                <ul>
+                    <li><strong>No emails received?</strong> Check GitHub Actions logs for errors, verify secrets are set correctly</li>
+                    <li><strong>Too many irrelevant jobs?</strong> Make TITLE_MUST_CONTAIN more specific</li>
+                    <li><strong>OpenAI rate limits?</strong> Script falls back to keyword scoring automatically</li>
+                    <li><strong>Gmail authentication failed?</strong> Regenerate App Password and update secret</li>
+                </ul>
+                <a href="https://github.com/Sanju07sr/linkedin-job-agent/issues" class="cta-button cta-secondary" target="_blank">Report Issue</a>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">🚀</span> Ready to Start?</h2>
+                <p style="font-size: 18px; font-weight: 600; margin-bottom: 25px;">Fork the repository now and set up your personal job agent in under 5 minutes!</p>
+                <a href="https://github.com/Sanju07sr/linkedin-job-agent/fork" class="cta-button" target="_blank">🍴 Fork & Get Started</a>
+                <a href="https://github.com/Sanju07sr/linkedin-job-agent" class="cta-button cta-secondary" target="_blank">📚 View Source Code</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
