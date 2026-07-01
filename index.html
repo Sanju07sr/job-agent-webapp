@@ -3,233 +3,827 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn Job Agent - Setup Guide</title>
+    <title>JobPilot - Your Personal AI Job Hunter</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 40px 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        .header {
-            background: linear-gradient(135deg, #0a66c2 0%, #004182 100%);
-            color: white;
-            padding: 50px 40px;
-            text-align: center;
-        }
-        .header h1 { font-size: 42px; margin-bottom: 10px; }
-        .header p { font-size: 18px; opacity: 0.9; }
-        .content { padding: 50px 40px; }
-        .section {
-            margin-bottom: 50px;
-            padding-bottom: 40px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        .section:last-child { border-bottom: none; }
-        .section h2 {
-            font-size: 28px;
-            color: #0a66c2;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .step-number {
-            background: #0a66c2;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .section p { font-size: 16px; line-height: 1.8; color: #333; margin-bottom: 15px; }
-        .code-box {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
             padding: 20px;
-            font-family: 'Courier New', monospace;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            padding: 30px 40px 20px;
+            text-align: center;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+        
+        .tagline {
+            color: #666;
             font-size: 14px;
-            overflow-x: auto;
-            margin: 15px 0;
         }
-        .feature {
-            background: #f0f7ff;
+        
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.4s ease;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step-label {
+            color: #667eea;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .question {
+            font-size: 28px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .helper-text {
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+        
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .file-upload {
+            border: 3px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 50px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .file-upload.dragover {
+            border-color: #667eea;
+            background: #e8eeff;
+            transform: scale(1.02);
+        }
+        
+        .file-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .file-text {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .file-sub {
+            color: #999;
+            font-size: 13px;
+        }
+        
+        .file-name {
+            display: none;
+            background: #e8eeff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        .file-name.show {
+            display: block;
+        }
+        
+        .remove-file {
+            color: #f44336;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 12px;
+        }
+        
+        .tag-input-container {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 10px;
+            min-height: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            cursor: text;
+        }
+        
+        .tag-input-container:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+        
+        .tag-remove:hover {
+            opacity: 1;
+        }
+        
+        .tag-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 150px;
+            font-size: 16px;
+            padding: 8px;
+            font-family: inherit;
+        }
+        
+        .review-section {
+            background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
-            margin: 15px 0;
-            border-left: 4px solid #0a66c2;
+            margin-bottom: 20px;
         }
-        .feature h3 { color: #0a66c2; margin-bottom: 10px; font-size: 18px; }
-        .cta-button {
-            display: inline-block;
-            background: #0a66c2;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            margin: 20px 10px 0 0;
+        
+        .review-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .review-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .review-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .review-value {
+            font-size: 16px;
+            color: #222;
+            font-weight: 500;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
             transition: all 0.3s;
+            font-family: inherit;
         }
-        .cta-button:hover { background: #004182; transform: translateY(-2px); }
-        .cta-secondary {
-            background: #28a745;
+        
+        .btn-back {
+            background: #f0f0f0;
+            color: #666;
         }
-        .cta-secondary:hover { background: #1e7e34; }
-        ul { margin: 15px 0; padding-left: 25px; }
-        ul li { margin: 8px 0; line-height: 1.6; }
-        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
-        .emoji { font-size: 24px; }
+        
+        .btn-back:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-next, .btn-submit {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-next:hover, .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-get-started {
+            width: 100%;
+            font-size: 18px;
+            padding: 18px;
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .success-title {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            color: #222;
+            margin-bottom: 15px;
+        }
+        
+        .success-text {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .intro-screen {
+            text-align: center;
+        }
+        
+        .intro-headline {
+            font-size: 36px;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+        
+        .intro-subtext {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 600px) {
+            .content {
+                padding: 30px 25px;
+            }
+            
+            .question {
+                font-size: 24px;
+            }
+            
+            .intro-headline {
+                font-size: 28px;
+            }
+            
+            .btn-back {
+                padding: 16px 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 LinkedIn Job Agent</h1>
-            <p>Your Personal 24/7 Job Hunting Assistant - Free Forever</p>
+            <div class="logo">JobPilot</div>
+            <div class="tagline">Your personal AI job hunter</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
         </div>
         
         <div class="content">
-            <div class="section">
-                <h2><span class="emoji">✨</span> What This Does</h2>
-                <p>Get instant email alerts when LinkedIn posts jobs matching your profile — completely automated, runs 24/7 in the background, 100% free.</p>
-                <div class="feature">
-                    <h3>🔍 Smart Matching</h3>
-                    <p>Uses OpenAI GPT-4o-mini to score jobs against your CV and skills</p>
-                </div>
-                <div class="feature">
-                    <h3>📧 Instant Alerts</h3>
-                    <p>Receive beautiful HTML emails every hour with new relevant jobs</p>
-                </div>
-                <div class="feature">
-                    <h3>🚫 No Duplicates</h3>
-                    <p>Smart caching ensures you only see each job once</p>
-                </div>
-                <div class="feature">
-                    <h3>💰 Zero Cost</h3>
-                    <p>Runs entirely on free GitHub Actions (2,000 minutes/month free)</p>
+            <!-- Intro Screen -->
+            <div class="step active intro-screen" id="step-intro">
+                <div class="intro-headline">Let AI find your next job — while you sleep.</div>
+                <div class="intro-subtext">Answer a few quick questions and we'll email you the best matching jobs every hour.</div>
+                <button class="btn-next btn-get-started" onclick="startForm()">Get Started</button>
+            </div>
+            
+            <!-- Step 1: LinkedIn URL -->
+            <div class="step" id="step-1">
+                <div class="step-label">Step 1 of 5</div>
+                <div class="question">What's your LinkedIn profile URL?</div>
+                <div class="helper-text">We'll use this to understand your experience and skills.</div>
+                <input type="text" id="linkedinUrl" placeholder="https://linkedin.com/in/yourname" />
+                <div class="button-group">
+                    <button class="btn-back" onclick="goBack()">Back</button>
+                    <button class="btn-next" id="btn-step-1" onclick="nextStep(1)" disabled>Next</button>
                 </div>
             </div>
-
-            <div class="section">
-                <h2><span class="step-number">1</span> Fork This Repository</h2>
-                <p>Click the button below to create your own copy of this job agent:</p>
-                <a href="https://github.com/Sanju07sr/linkedin-job-agent/fork" class="cta-button" target="_blank">Fork Repository</a>
+            
+            <!-- Step 2: CV Upload -->
+            <div class="step" id="step-2">
+                <div class="step-label">Step 2 of 5</div>
+                <div class="question">Upload your CV/Resume</div>
+                <div class="helper-text">Drag and drop or click to upload (PDF or DOCX)</div>
+                <div class="file-upload" id="fileUpload">
+                    <div class="file-icon">📄</div>
+                    <div class="file-text">Drop your file here or click to browse</div>
+                    <div class="file-sub">PDF or DOCX, up to 10MB</div>
+                    <input type="file" id="cvFile" accept=".pdf,.docx" style="display:none" />
+                </div>
+                <div class="file-name" id="fileName"></div>
+                <div class="button-group">
+                    <button class="btn-back" onclick="goBack()">Back</button>
+                    <button class="btn-next" id="btn-step-2" onclick="nextStep(2)" disabled>Next</button>
+                </div>
             </div>
-
-            <div class="section">
-                <h2><span class="step-number">2</span> Customize Your Profile</h2>
-                <p>Edit <span class="highlight">job_scanner.py</span> and update these sections:</p>
-                <div class="code-box">CANDIDATE_PROFILE = """<br>
-Name: [Your Name]<br>
-Experience: [e.g., 4 years in Python Development]<br>
-Skills: [e.g., Django, Flask, AWS, PostgreSQL]<br>
-Visa: [e.g., Stamp 4 (Ireland) - eligible to work full-time]<br>
-Location: [e.g., Dublin/Ireland (open to hybrid/remote)]<br>
-Certifications: [e.g., AWS Certified Developer]<br>
-Domain: [e.g., FinTech, E-commerce]<br>
-"""</div>
-                <div class="code-box">TITLE_MUST_CONTAIN = [<br>
-&nbsp;&nbsp;&nbsp;&nbsp;'python', 'django', 'backend', 'software engineer',<br>
-&nbsp;&nbsp;&nbsp;&nbsp;'full stack', 'api developer', 'flask'<br>
-]</div>
-                <div class="code-box">search_queries = [<br>
-&nbsp;&nbsp;&nbsp;&nbsp;'Python Developer Ireland',<br>
-&nbsp;&nbsp;&nbsp;&nbsp;'Backend Engineer Ireland',<br>
-&nbsp;&nbsp;&nbsp;&nbsp;'Django Developer Ireland',<br>
-]</div>
+            
+            <!-- Step 3: Job Titles -->
+            <div class="step" id="step-3">
+                <div class="step-label">Step 3 of 5</div>
+                <div class="question">What job titles are you looking for?</div>
+                <div class="helper-text">Add as many as you like. Press Enter after each one.</div>
+                <div class="tag-input-container" id="jobTitlesContainer" onclick="focusTagInput('jobTitlesInput')">
+                    <input type="text" class="tag-input" id="jobTitlesInput" placeholder="e.g., Data Analyst" />
+                </div>
+                <div class="button-group">
+                    <button class="btn-back" onclick="goBack()">Back</button>
+                    <button class="btn-next" id="btn-step-3" onclick="nextStep(3)" disabled>Next</button>
+                </div>
             </div>
-
-            <div class="section">
-                <h2><span class="step-number">3</span> Set Up Secrets</h2>
-                <p>Go to <span class="highlight">Settings → Secrets and variables → Actions</span> in your forked repo and add:</p>
-                <ul>
-                    <li><strong>SENDER_EMAIL:</strong> Your Gmail address (e.g., yourname@gmail.com)</li>
-                    <li><strong>SENDER_PASSWORD:</strong> Gmail App Password (<a href="https://myaccount.google.com/apppasswords" target="_blank">Generate here</a>)</li>
-                    <li><strong>RECIPIENT_EMAIL:</strong> Email where you want job alerts sent</li>
-                    <li><strong>OPENAI_API_KEY:</strong> Your OpenAI API key (<a href="https://platform.openai.com/api-keys" target="_blank">Get key</a>)</li>
-                    <li><strong>MIN_MATCH_PCT:</strong> Minimum match % to trigger alert (default: 50)</li>
-                </ul>
+            
+            <!-- Step 4: Locations -->
+            <div class="step" id="step-4">
+                <div class="step-label">Step 4 of 5</div>
+                <div class="question">Which locations are you open to working in?</div>
+                <div class="helper-text">Add countries, cities, or "Remote". Press Enter after each one.</div>
+                <div class="tag-input-container" id="locationsContainer" onclick="focusTagInput('locationsInput')">
+                    <input type="text" class="tag-input" id="locationsInput" placeholder="e.g., Ireland" />
+                </div>
+                <div class="button-group">
+                    <button class="btn-back" onclick="goBack()">Back</button>
+                    <button class="btn-next" id="btn-step-4" onclick="nextStep(4)" disabled>Next</button>
+                </div>
             </div>
-
-            <div class="section">
-                <h2><span class="step-number">4</span> Enable GitHub Actions</h2>
-                <p>Go to the <span class="highlight">Actions</span> tab in your forked repo and click <strong>"I understand my workflows, go ahead and enable them"</strong></p>
+            
+            <!-- Step 5: Email -->
+            <div class="step" id="step-5">
+                <div class="step-label">Step 5 of 5</div>
+                <div class="question">Where should we send your job alerts?</div>
+                <div class="helper-text">You'll get an email with your top 10 matching jobs, straight to your inbox.</div>
+                <input type="email" id="email" placeholder="your@email.com" />
+                <div class="button-group">
+                    <button class="btn-back" onclick="goBack()">Back</button>
+                    <button class="btn-next" id="btn-step-5" onclick="nextStep(5)" disabled>Next</button>
+                </div>
             </div>
-
-            <div class="section">
-                <h2><span class="step-number">5</span> Test Your Agent</h2>
-                <p>Go to <span class="highlight">Actions → LinkedIn Job Scanner - 24/7 Agent → Run workflow</span> to trigger a manual test run.</p>
-                <p>Check your email inbox (and spam folder) for job alerts!</p>
+            
+            <!-- Step 6: Review -->
+            <div class="step" id="step-6">
+                <div class="step-label">Review & Submit</div>
+                <div class="question">Everything look good?</div>
+                <div class="review-section" id="reviewSection"></div>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div>Setting up your job alerts...</div>
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+                <div class="button-group">
+                    <button class="btn-back" onclick="goBack()">Back</button>
+                    <button class="btn-submit" onclick="submitForm()">Start My Job Search</button>
+                </div>
             </div>
-
-            <div class="section">
-                <h2><span class="emoji">⚙️</span> Customization Options</h2>
-                <p>Edit <span class="highlight">.github/workflows/scan.yml</span> to change the schedule:</p>
-                <div class="code-box">schedule:<br>
-&nbsp;&nbsp;- cron: '*/30 * * * *'  # Every 30 minutes (default)<br>
-&nbsp;&nbsp;# OR<br>
-&nbsp;&nbsp;- cron: '0 * * * *'     # Every hour<br>
-&nbsp;&nbsp;# OR<br>
-&nbsp;&nbsp;- cron: '0 */2 * * *'   # Every 2 hours</div>
-            </div>
-
-            <div class="section">
-                <h2><span class="emoji">📊</span> Monitor Your Agent</h2>
-                <p>Check the <span class="highlight">Actions</span> tab anytime to see:</p>
-                <ul>
-                    <li>✅ Which jobs were found and scored</li>
-                    <li>📩 How many email alerts were sent</li>
-                    <li>🚫 Which jobs were filtered out (irrelevant titles)</li>
-                    <li>⏱️ Run history and success rate</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h2><span class="emoji">🎯</span> Tips for Best Results</h2>
-                <ul>
-                    <li><strong>Be specific with job titles:</strong> Add exact titles you're targeting to reduce false positives</li>
-                    <li><strong>Update your profile regularly:</strong> Keep CANDIDATE_PROFILE in sync with your latest skills</li>
-                    <li><strong>Adjust match threshold:</strong> Start with 50%, increase to 70% if you get too many alerts</li>
-                    <li><strong>Check spam folder:</strong> First few emails might land in spam — mark as "Not Spam"</li>
-                    <li><strong>Monitor LinkedIn blocks:</strong> If you see 429 errors, the script auto-retries with delays</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h2><span class="emoji">🆘</span> Need Help?</h2>
-                <p>Common issues and solutions:</p>
-                <ul>
-                    <li><strong>No emails received?</strong> Check GitHub Actions logs for errors, verify secrets are set correctly</li>
-                    <li><strong>Too many irrelevant jobs?</strong> Make TITLE_MUST_CONTAIN more specific</li>
-                    <li><strong>OpenAI rate limits?</strong> Script falls back to keyword scoring automatically</li>
-                    <li><strong>Gmail authentication failed?</strong> Regenerate App Password and update secret</li>
-                </ul>
-                <a href="https://github.com/Sanju07sr/linkedin-job-agent/issues" class="cta-button cta-secondary" target="_blank">Report Issue</a>
-            </div>
-
-            <div class="section">
-                <h2><span class="emoji">🚀</span> Ready to Start?</h2>
-                <p style="font-size: 18px; font-weight: 600; margin-bottom: 25px;">Fork the repository now and set up your personal job agent in under 5 minutes!</p>
-                <a href="https://github.com/Sanju07sr/linkedin-job-agent/fork" class="cta-button" target="_blank">🍴 Fork & Get Started</a>
-                <a href="https://github.com/Sanju07sr/linkedin-job-agent" class="cta-button cta-secondary" target="_blank">📚 View Source Code</a>
+            
+            <!-- Success Screen -->
+            <div class="step" id="step-success">
+                <div class="success-icon">🎉</div>
+                <div class="success-title">You're all set!</div>
+                <div class="success-text">
+                    We're scanning LinkedIn now. Your first job alert email will arrive shortly.<br><br>
+                    Check your inbox every hour for new matches.
+                </div>
             </div>
         </div>
     </div>
+    
+    <script>
+        // ========== CONFIGURATION ==========
+        const WEBHOOK_URL = 'https://YOUR_WEBHOOK_URL_HERE.com/endpoint';
+        
+        // ========== STATE ==========
+        let currentStep = 0;
+        const totalSteps = 5;
+        let formData = {
+            linkedinUrl: '',
+            cvFile: null,
+            cvFileName: '',
+            cvFileBase64: '',
+            jobTitles: [],
+            locations: [],
+            email: ''
+        };
+        
+        // ========== NAVIGATION ==========
+        function startForm() {
+            currentStep = 1;
+            showStep(currentStep);
+            updateProgress();
+        }
+        
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            if (step === 0) {
+                document.getElementById('step-intro').classList.add('active');
+            } else if (step === 7) {
+                document.getElementById('step-success').classList.add('active');
+            } else {
+                document.getElementById(`step-${step}`).classList.add('active');
+            }
+        }
+        
+        function nextStep(step) {
+            if (!validateStep(step)) return;
+            saveStepData(step);
+            
+            if (step === 5) {
+                populateReview();
+            }
+            
+            currentStep++;
+            showStep(currentStep);
+            updateProgress();
+        }
+        
+        function goBack() {
+            if (currentStep === 1) {
+                currentStep = 0;
+            } else {
+                currentStep--;
+            }
+            showStep(currentStep);
+            updateProgress();
+        }
+        
+        function updateProgress() {
+            const progress = currentStep === 0 ? 0 : (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+        // ========== VALIDATION ==========
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    const linkedin = document.getElementById('linkedinUrl').value.trim();
+                    return linkedin.includes('linkedin.com/in/');
+                case 2:
+                    return formData.cvFile !== null;
+                case 3:
+                    return formData.jobTitles.length > 0;
+                case 4:
+                    return formData.locations.length > 0;
+                case 5:
+                    const email = document.getElementById('email').value.trim();
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                default:
+                    return true;
+            }
+        }
+        
+        function saveStepData(step) {
+            switch(step) {
+                case 1:
+                    formData.linkedinUrl = document.getElementById('linkedinUrl').value.trim();
+                    break;
+                case 5:
+                    formData.email = document.getElementById('email').value.trim();
+                    break;
+            }
+        }
+        
+        // ========== INPUT HANDLERS ==========
+        // LinkedIn URL
+        document.getElementById('linkedinUrl').addEventListener('input', (e) => {
+            const valid = e.target.value.trim().includes('linkedin.com/in/');
+            document.getElementById('btn-step-1').disabled = !valid;
+        });
+        
+        // Email
+        document.getElementById('email').addEventListener('input', (e) => {
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value.trim());
+            document.getElementById('btn-step-5').disabled = !valid;
+        });
+        
+        // File Upload
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('cvFile');
+        const fileName = document.getElementById('fileName');
+        
+        fileUpload.addEventListener('click', () => fileInput.click());
+        
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('dragover');
+        });
+        
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('dragover');
+        });
+        
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+        
+        function handleFile(file) {
+            const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            
+            if (!validTypes.includes(file.type)) {
+                alert('Please upload a PDF or DOCX file');
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                alert('File size must be under 10MB');
+                return;
+            }
+            
+            formData.cvFile = file;
+            formData.cvFileName = file.name;
+            fileName.innerHTML = `📄 ${file.name} <span class="remove-file" onclick="removeFile()">✕ Remove</span>`;
+            fileName.classList.add('show');
+            document.getElementById('btn-step-2').disabled = false;
+            
+            // Convert to base64
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                formData.cvFileBase64 = e.target.result.split(',')[1];
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function removeFile() {
+            formData.cvFile = null;
+            formData.cvFileName = '';
+            formData.cvFileBase64 = '';
+            fileName.classList.remove('show');
+            fileInput.value = '';
+            document.getElementById('btn-step-2').disabled = true;
+        }
+        
+        // Tag Inputs
+        function setupTagInput(inputId, containerId, dataKey, btnId) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && input.value.trim()) {
+                    e.preventDefault();
+                    addTag(input.value.trim(), containerId, dataKey);
+                    input.value = '';
+                    updateTagButton(dataKey, btnId);
+                }
+            });
+        }
+        
+        function addTag(value, containerId, dataKey) {
+            formData[dataKey].push(value);
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.innerHTML = `${value} <span class="tag-remove" onclick="removeTag('${value}', '${containerId}', '${dataKey}')">×</span>`;
+            const container = document.getElementById(containerId);
+            const input = container.querySelector('.tag-input');
+            container.insertBefore(tag, input);
+        }
+        
+        function removeTag(value, containerId, dataKey) {
+            formData[dataKey] = formData[dataKey].filter(t => t !== value);
+            const container = document.getElementById(containerId);
+            const tags = container.querySelectorAll('.tag');
+            tags.forEach(tag => {
+                if (tag.textContent.includes(value)) {
+                    tag.remove();
+                }
+            });
+            const btnId = dataKey === 'jobTitles' ? 'btn-step-3' : 'btn-step-4';
+            updateTagButton(dataKey, btnId);
+        }
+        
+        function updateTagButton(dataKey, btnId) {
+            document.getElementById(btnId).disabled = formData[dataKey].length === 0;
+        }
+        
+        function focusTagInput(inputId) {
+            document.getElementById(inputId).focus();
+        }
+        
+        setupTagInput('jobTitlesInput', 'jobTitlesContainer', 'jobTitles', 'btn-step-3');
+        setupTagInput('locationsInput', 'locationsContainer', 'locations', 'btn-step-4');
+        
+        // ========== REVIEW ==========
+        function populateReview() {
+            const reviewSection = document.getElementById('reviewSection');
+            reviewSection.innerHTML = `
+                <div class="review-item">
+                    <div class="review-label">LinkedIn Profile</div>
+                    <div class="review-value">${formData.linkedinUrl}</div>
+                </div>
+                <div class="review-item">
+                    <div class="review-label">CV / Resume</div>
+                    <div class="review-value">📄 ${formData.cvFileName}</div>
+                </div>
+                <div class="review-item">
+                    <div class="review-label">Job Titles</div>
+                    <div class="review-value">${formData.jobTitles.join(', ')}</div>
+                </div>
+                <div class="review-item">
+                    <div class="review-label">Locations</div>
+                    <div class="review-value">${formData.locations.join(', ')}</div>
+                </div>
+                <div class="review-item">
+                    <div class="review-label">Email</div>
+                    <div class="review-value">${formData.email}</div>
+                </div>
+            `;
+        }
+        
+        // ========== SUBMIT ==========
+        async function submitForm() {
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const submitBtn = document.querySelector('.btn-submit');
+            const backBtn = document.querySelector('.btn-back');
+            
+            loading.classList.add('show');
+            errorMessage.classList.remove('show');
+            submitBtn.disabled = true;
+            backBtn.disabled = true;
+            
+            const payload = {
+                linkedinUrl: formData.linkedinUrl,
+                cvFileName: formData.cvFileName,
+                cvFileBase64: formData.cvFileBase64,
+                jobTitles: formData.jobTitles,
+                locations: formData.locations,
+                email: formData.email
+            };
+            
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server responded with ${response.status}`);
+                }
+                
+                // Success
+                loading.classList.remove('show');
+                currentStep = 7;
+                showStep(currentStep);
+                updateProgress();
+                
+            } catch (error) {
+                loading.classList.remove('show');
+                errorMessage.textContent = `Oops! Something went wrong: ${error.message}. Please try again.`;
+                errorMessage.classList.add('show');
+                submitBtn.disabled = false;
+                backBtn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
